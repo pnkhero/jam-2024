@@ -51,12 +51,8 @@ class Game:
 
         if self.pressed.get(pygame.K_RIGHT) and self.player.rect.x < 890:
             self.player.move_right()
-        elif self.pressed.get(pygame.K_LEFT) and self.player.rect.x > 0:
-            self.player.move_left()
-        elif self.pressed.get(pygame.K_UP) and self.player.rect.y > 164:
-            self.player.move_up()
-        elif self.pressed.get(pygame.K_DOWN) and self.player.rect.y < 660:
-            self.player.move_down()
+        elif self.pressed.get(pygame.K_UP):
+            self.player.jump()
 
     def spawn_enemy(self):
         enemy = Enemy(self)

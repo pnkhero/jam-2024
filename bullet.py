@@ -3,13 +3,13 @@ import pygame
 class Bullet(pygame.sprite.Sprite):
     def __init__(self, player):
         super().__init__()
-        self.velocity = 3
+        self.velocity = 5
         self.player = player
         self.image = pygame.image.load('asset/bullet.png')
-        self.image = pygame.transform.scale(self.image,(50,50))
+        self.image = pygame.transform.scale(self.image,(30,30))
         self.rect = self.image.get_rect()
-        self.rect.x = player.rect.x + 320
-        self.rect.y = player.rect.y + 120
+        self.rect.x = player.rect.x + 35
+        self.rect.y = player.rect.y + 30
         self.origin_image = self.image
         self.angle = 0
     

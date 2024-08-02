@@ -8,13 +8,47 @@ class Player(pygame.sprite.Sprite):
         self.health = 100
         self.max_health = 100
         self.attack = 10
-        self.velocity = 2
+        self.velocity = 3
+        self.jump_velocity = 15  # Vitesse initiale du saut
+        self.gravity = 0.8  # Gravité affectant la chute
+        self.is_jumping = False
+        self.jump_speed = 0
         self.all_bullet = pygame.sprite.Group()
-        self.image = pygame.image.load('asset/player1.png').convert_alpha()
+        
+        # Charger le sprite sheet et découper les frames
+        self.sprite_sheet = pygame.image.load('asset/play.png').convert_alpha()
+        self.frames_right = self.load_frames(self.sprite_sheet, 8, offset_x=0) 
+        self.frames_left = [pygame.transform.flip(frame, True, False) for frame in self.frames_right]  # Inverser les frames pour mouvement à gauche
+        self.frames = self.frames_right  # Par défaut, utiliser les frames pour mouvement à droite
+        self.current_frame = 0
+        self.image = self.frames[self.current_frame]
         self.rect = self.image.get_rect()
-        self.rect.x = 0
-        self.rect.y = 500
+        self.rect.x = 10
+        self.rect.y = 690  # Position initiale y du joueur
         self.last_shot_time = 0
+        self.last_update_time = 0
+        self.frame_rate = 100  # Temps entre chaque frame en millisecondes
+
+    def load_frames(self, sprite_sheet, num_frames, scale=None, offset_x=0):
+        frames = []
+        frame_width = sprite_sheet.get_width() // num_frames
+        frame_height = sprite_sheet.get_height()
+
+        for i in range(num_frames):
+            frame = sprite_sheet.subsurface(pygame.Rect(i * frame_width + offset_x, 0, frame_width, frame_height))
+            if scale:
+                frame = pygame.transform.scale(frame, scale)  # Redimensionner le frame
+            frames.append(frame)
+        frames.append(frames[0])
+
+        return frames
+
+    def update_animation(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_update_time > self.frame_rate:
+            self.current_frame = (self.current_frame + 1) % len(self.frames)
+            self.image = self.frames[self.current_frame]
+            self.last_update_time = current_time
 
     def damage(self, amount):
         if self.health - amount > amount:
@@ -23,8 +57,8 @@ class Player(pygame.sprite.Sprite):
             self.game.game_over()
 
     def update_health_bar(self, surface):
-        pygame.draw.rect(surface, (60, 63, 60), [self.rect.x + 150, self.rect.y + 75, self.max_health, 5])
-        pygame.draw.rect(surface, (111, 210, 46), [self.rect.x + 150, self.rect.y + 75, self.health, 5])
+        pygame.draw.rect(surface, (60, 63, 60), [self.rect.x + -15, self.rect.y + -10, self.max_health, 5])
+        pygame.draw.rect(surface, (111, 210, 46), [self.rect.x + -15, self.rect.y + -10, self.health, 5])
 
     def launch_bullet(self):
         current_time = pygame.time.get_ticks()
@@ -32,16 +66,34 @@ class Player(pygame.sprite.Sprite):
             self.all_bullet.add(Bullet(self))
             self.game.sound_mana.play('tir')
             self.last_shot_time = current_time
-    
+
     def move_right(self):
         if not self.game.check_collision(self, self.game.all_enemy):
             self.rect.x += self.velocity
+            self.frames = self.frames_right  # Utiliser les frames pour mouvement à droite
+            self.update_animation()
 
     def move_left(self):
-        self.rect.x -= self.velocity
+        if not self.game.check_collision(self, self.game.all_enemy):
+            self.rect.x -= self.velocity
+            self.frames = self.frames_left  # Utiliser les frames inversées pour mouvement à gauche
+            self.update_animation()
 
-    def move_up(self):
-        self.rect.y -= self.velocity
+    def jump(self):
+        if not self.is_jumping:
+            self.is_jumping = True
+            self.jump_speed = self.jump_velocity
 
-    def move_down(self):
-        self.rect.y += self.velocity
+    def apply_gravity(self):
+        if self.is_jumping or self.rect.y < 690:  # Assurez-vous que la valeur 690 correspond à la position de votre sol
+            self.rect.y -= self.jump_speed
+            self.jump_speed -= self.gravity
+            if self.rect.y >= 690:
+                self.rect.y = 690
+                self.is_jumping = False
+                self.jump_speed = 0
+
+    def update(self):
+        self.update_animation()
+        self.apply_gravity()
+        self.all_bullet.update()

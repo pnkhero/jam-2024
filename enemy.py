@@ -8,20 +8,20 @@ class Enemy(pygame.sprite.Sprite):
         self.health = 100
         self.max_health = 100
         self.attack = 0.8
-        self.velocity = random.randint(2, 5)
+        self.velocity = random.randint(3, 5)
         self.all_bullet = pygame.sprite.Group()
         self.image = pygame.image.load('asset/enemy1.png')
         self.image = pygame.transform.scale(self.image,(300,300))
         self.rect = self.image.get_rect()
-        self.rect.x = 1000 + random.randint(0, 300)
-        self.rect.y = 500 + random.randint(0, 300)
+        self.rect.x = 1200 
+        self.rect.y = 500 + random.randint(0, 200)
         self.hit_time = None
 
     def remove(self):
         self.game.score += 20
-        self.rect.x = 1000 + random.randint(0, 300)
-        self.rect.y = 500 + random.randint(0, 300)
-        self.velocity = random.randint(2, 5)
+        self.rect.x = 1200
+        self.rect.y = 500 + random.randint(0, 200)
+        self.velocity = random.randint(3, 5)
         self.hit_time = None
 
     def forward(self):
@@ -44,20 +44,20 @@ class Enemy1(pygame.sprite.Sprite):
         self.health = 100
         self.max_health = 100
         self.attack = 0.8
-        self.velocity = random.randint(2, 5)
+        self.velocity = random.randint(3, 5)
         self.all_bullet = pygame.sprite.Group()
         self.image = pygame.image.load('asset/enemy2.png')
         self.image = pygame.transform.scale(self.image,(300,300))
         self.rect = self.image.get_rect()
-        self.rect.x = 1000 + random.randint(0, 300)
-        self.rect.y = 500 + random.randint(0, 300)
+        self.rect.x = 1200
+        self.rect.y = 500 + random.randint(0, 200)
         self.hit_time = None
 
     def remove(self):
         self.game.score += 20
-        self.rect.x = 1000 + random.randint(0, 300)
-        self.rect.y = 500 + random.randint(0, 300)
-        self.velocity = random.randint(2, 5)
+        self.rect.x = 1200
+        self.rect.y = 500 + random.randint(0, 200)
+        self.velocity = random.randint(3, 5)
         self.hit_time = None
 
     def forward(self):

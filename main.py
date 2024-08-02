@@ -7,13 +7,11 @@ from game import Game
 pygame.init()
 
 clock = pygame.time.Clock()
-FPS = 40  # Augmentation des FPS pour une animation plus fluide
+FPS = 40
 
-# Fenêtre de jeu
 pygame.display.set_caption("waterland")
 screen = pygame.display.set_mode((1200, 900))
 
-# Charger et convertir les images d'arrière-plan et autres assets
 background = pygame.image.load('asset/bg.jpg').convert()
 nuage = pygame.image.load('asset/nuage.png').convert_alpha()
 nuage1 = pygame.image.load('asset/nuage.png').convert_alpha()
@@ -26,7 +24,6 @@ banner = pygame.transform.scale(banner, (500, 500))
 banner_rect = banner.get_rect()
 banner_rect.x = math.ceil(screen.get_width() / 4)
 
-# Bouton play
 play_button = pygame.image.load('asset/button.png').convert_alpha()
 play_button = pygame.transform.scale(play_button, (400, 150))
 play_button_rect = play_button.get_rect()
@@ -39,7 +36,6 @@ soleil_rect = zozo.get_rect()
 soleil_rect.x = math.ceil(screen.get_width() / 2)
 soleil_rect.y = math.ceil(screen.get_height() / 2.50)
 
-# Initialiser les positions des arrière-plans
 background_x = 0
 nuage_x = 0
 nuage1_x = screen.get_width() // 2
@@ -48,16 +44,12 @@ game = Game()
 
 running = True
 
-# Mettre à jour l'écran
 pygame.display.flip()
 
-# Boucle de jeu
 while running:
-    # Appliquer l'arrière-plan
     screen.blit(background, (background_x, 0))
     screen.blit(background, (background_x + background.get_width(), 0))
 
-    # Effet de parallaxe pour les nuages
     nuage_x -= 1
     nuage1_x -= 1
 
@@ -80,7 +72,6 @@ while running:
 
     pygame.display.flip()
 
-    # Fermer la fenêtre
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False

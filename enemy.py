@@ -15,7 +15,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = 1000 + random.randint(0, 300)
         self.rect.y = 500 + random.randint(0, 300)
-        self.hit_time = None  # Initialiser le temps de collision
+        self.hit_time = None
 
     def remove(self):
         self.game.score += 20
@@ -31,9 +31,9 @@ class Enemy(pygame.sprite.Sprite):
         if not self.game.check_collision(self, self.game.all_player):
             self.rect.x -= self.velocity
         else:
-            if self.hit_time is None:  # Si la collision vient de se produire
+            if self.hit_time is None:
                 self.hit_time = pygame.time.get_ticks()
-            elif pygame.time.get_ticks() - self.hit_time > 500:  # Si 2 secondes se sont écoulées
+            elif pygame.time.get_ticks() - self.hit_time > 500:
                 self.remove()
             self.game.player.damage(self.attack)
 
@@ -51,7 +51,7 @@ class Enemy1(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = 1000 + random.randint(0, 300)
         self.rect.y = 500 + random.randint(0, 300)
-        self.hit_time = None  # Initialiser le temps de collision
+        self.hit_time = None
 
     def remove(self):
         self.game.score += 20
@@ -67,9 +67,9 @@ class Enemy1(pygame.sprite.Sprite):
         if not self.game.check_collision(self, self.game.all_player):
             self.rect.x -= self.velocity
         else:
-            if self.hit_time is None:  # Si la collision vient de se produire
+            if self.hit_time is None:
                 self.hit_time = pygame.time.get_ticks()
-            elif pygame.time.get_ticks() - self.hit_time > 500:  # Si 2 secondes se sont écoulées
+            elif pygame.time.get_ticks() - self.hit_time > 500:
                 self.remove()
             self.game.player.damage(self.attack)
 

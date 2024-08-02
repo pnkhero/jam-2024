@@ -28,10 +28,10 @@ class Player(pygame.sprite.Sprite):
 
     def launch_bullet(self):
         current_time = pygame.time.get_ticks()
-        if current_time - self.last_shot_time >= 500:  # Vérifier si 0,5 secondes se sont écoulées
+        if current_time - self.last_shot_time >= 500:
             self.all_bullet.add(Bullet(self))
             self.game.sound_mana.play('tir')
-            self.last_shot_time = current_time  # Mettre à jour le temps du dernier tir
+            self.last_shot_time = current_time
     
     def move_right(self):
         if not self.game.check_collision(self, self.game.all_enemy):

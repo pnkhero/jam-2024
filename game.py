@@ -45,10 +45,8 @@ class Game:
 
         for enemy in self.all_enemy:
             enemy.forward()
-        #apply blullet
         self.player.all_bullet.draw(screen)
 
-        #apply enemy
         self.all_enemy.draw(screen)
 
         if self.pressed.get(pygame.K_RIGHT) and self.player.rect.x < 890:

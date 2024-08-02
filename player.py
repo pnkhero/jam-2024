@@ -9,25 +9,24 @@ class Player(pygame.sprite.Sprite):
         self.max_health = 100
         self.attack = 10
         self.velocity = 3
-        self.jump_velocity = 15  # Vitesse initiale du saut
-        self.gravity = 0.8  # Gravité affectant la chute
+        self.jump_velocity = 15
+        self.gravity = 0.8
         self.is_jumping = False
         self.jump_speed = 0
         self.all_bullet = pygame.sprite.Group()
         
-        # Charger le sprite sheet et découper les frames
         self.sprite_sheet = pygame.image.load('asset/play.png').convert_alpha()
         self.frames_right = self.load_frames(self.sprite_sheet, 8, offset_x=0) 
-        self.frames_left = [pygame.transform.flip(frame, True, False) for frame in self.frames_right]  # Inverser les frames pour mouvement à gauche
-        self.frames = self.frames_right  # Par défaut, utiliser les frames pour mouvement à droite
+        self.frames_left = [pygame.transform.flip(frame, True, False) for frame in self.frames_right]
+        self.frames = self.frames_right
         self.current_frame = 0
         self.image = self.frames[self.current_frame]
         self.rect = self.image.get_rect()
-        self.rect.x = 10
-        self.rect.y = 690  # Position initiale y du joueur
+        self.rect.x = 250
+        self.rect.y = 690
         self.last_shot_time = 0
         self.last_update_time = 0
-        self.frame_rate = 100  # Temps entre chaque frame en millisecondes
+        self.frame_rate = 100
 
     def load_frames(self, sprite_sheet, num_frames, scale=None, offset_x=0):
         frames = []
@@ -37,7 +36,7 @@ class Player(pygame.sprite.Sprite):
         for i in range(num_frames):
             frame = sprite_sheet.subsurface(pygame.Rect(i * frame_width + offset_x, 0, frame_width, frame_height))
             if scale:
-                frame = pygame.transform.scale(frame, scale)  # Redimensionner le frame
+                frame = pygame.transform.scale(frame, scale)
             frames.append(frame)
         frames.append(frames[0])
 
@@ -70,13 +69,12 @@ class Player(pygame.sprite.Sprite):
     def move_right(self):
         if not self.game.check_collision(self, self.game.all_enemy):
             self.rect.x += self.velocity
-            self.frames = self.frames_right  # Utiliser les frames pour mouvement à droite
+            self.frames = self.frames_right
             self.update_animation()
 
     def move_left(self):
         if not self.game.check_collision(self, self.game.all_enemy):
             self.rect.x -= self.velocity
-            self.frames = self.frames_left  # Utiliser les frames inversées pour mouvement à gauche
             self.update_animation()
 
     def jump(self):
@@ -85,7 +83,7 @@ class Player(pygame.sprite.Sprite):
             self.jump_speed = self.jump_velocity
 
     def apply_gravity(self):
-        if self.is_jumping or self.rect.y < 690:  # Assurez-vous que la valeur 690 correspond à la position de votre sol
+        if self.is_jumping or self.rect.y < 690:
             self.rect.y -= self.jump_speed
             self.jump_speed -= self.gravity
             if self.rect.y >= 690:

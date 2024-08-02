@@ -20,9 +20,6 @@ class Game:
         self.sound_mana.play('music')
         self.spawn_enemy()
         self.spawn_enemy()
-        self.spawn_enemy()
-        self.spawn_enemy()
-        self.spawn_enemy()
 
     def game_over(self):
         self.all_enemy = pygame.sprite.Group()
@@ -51,6 +48,8 @@ class Game:
 
         if self.pressed.get(pygame.K_RIGHT) and self.player.rect.x < 890:
             self.player.move_right()
+        elif self.pressed.get(pygame.K_LEFT) and self.player.rect.x > 0:
+            self.player.move_left()
         elif self.pressed.get(pygame.K_UP):
             self.player.jump()
 

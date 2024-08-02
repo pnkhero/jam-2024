@@ -15,6 +15,7 @@ screen = pygame.display.set_mode((1200, 900))
 background = pygame.image.load('asset/sky.png').convert()
 mountain = pygame.image.load('asset/mountain.png').convert_alpha()
 sol = pygame.image.load('asset/sol.png').convert_alpha()  # Charger l'image du sol
+dragon = pygame.image.load('asset/dragon.png').convert_alpha()
 soleil = pygame.image.load('asset/soleil.png').convert_alpha()
 soleil = pygame.transform.scale(soleil, (300, 300))
 banner = pygame.image.load('asset/banner.png').convert_alpha()
@@ -35,7 +36,9 @@ background_x = 0
 mountain_x = 0
 mountain_y = screen.get_height() - mountain.get_height() - 50  # Monte la montagne de 50 pixels
 sol_x = 0
-sol_y = screen.get_height() - sol.get_height()  # Positionner le sol pour toucher le bas de l'écran
+sol_y = screen.get_height() - sol.get_height()
+dragon_x = 0
+dragon_y = 550
 
 game = Game()
 
@@ -67,6 +70,7 @@ while running:
 
     if game.is_playing:
         screen.blit(soleil, (920, 0))
+        screen.blit(dragon, (dragon_x, dragon_y))
         game.update(screen)
     else:
         screen.blit(banner, banner_rect)

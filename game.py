@@ -21,7 +21,7 @@ class Game:
         self.last_spawn_time = time.time()
 
         self.dragon_image = pygame.image.load('asset/dragon.png').convert_alpha()
-        self.dragon_rect = self.dragon_image.get_rect(topleft=(-50, 550))  # Set initial position of the dragon
+        self.dragon_rect = self.dragon_image.get_rect(topleft=(-50, 550))
         self.dragon_velocity = 1.5
 
     def start(self):

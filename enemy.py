@@ -10,12 +10,41 @@ class Enemy(pygame.sprite.Sprite):
         self.attack = 0.8
         self.velocity = random.randint(3, 5)
         self.all_bullet = pygame.sprite.Group()
-        self.image = pygame.image.load('asset/enemy1.png')
-        self.image = pygame.transform.scale(self.image,(300,300))
+        
+        self.sprite_sheet = pygame.image.load('asset/eny.png').convert_alpha()
+        self.frames_right = self.load_frames(self.sprite_sheet, 12)
+        self.frames_left = [pygame.transform.flip(frame, True, False) for frame in self.frames_right]
+        self.frames = self.frames_right
+        self.current_frame = 0
+        self.image = self.frames[self.current_frame]
+        
         self.rect = self.image.get_rect()
         self.rect.x = 1200 
-        self.rect.y = 500 + random.randint(0, 200)
+        self.rect.y =  715
         self.hit_time = None
+        self.last_update_time = 0
+        self.frame_rate = 300  # Time between frames in milliseconds
+
+    def load_frames(self, sprite_sheet, num_frames, scale=None):
+        frames = []
+        frame_width = sprite_sheet.get_width() // num_frames
+        frame_height = sprite_sheet.get_height()
+
+        for i in range(num_frames):
+            frame = sprite_sheet.subsurface(pygame.Rect(i * frame_width, 0, frame_width, frame_height))
+            if scale:
+                frame = pygame.transform.scale(frame, scale)
+            frames.append(frame)
+        frames.append(frames[0])
+
+        return frames
+
+    def update_animation(self):
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_update_time > self.frame_rate:
+            self.current_frame = (self.current_frame + 1) % len(self.frames)
+            self.image = self.frames[self.current_frame]
+            self.last_update_time = current_time
 
     def remove(self):
         self.game.score += 20
@@ -30,6 +59,7 @@ class Enemy(pygame.sprite.Sprite):
             self.remove()
         if not self.game.check_collision(self, self.game.all_player):
             self.rect.x -= self.velocity
+            self.update_animation()  # Update animation as it moves
         else:
             if self.hit_time is None:
                 self.hit_time = pygame.time.get_ticks()

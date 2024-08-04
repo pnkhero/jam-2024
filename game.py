@@ -20,9 +20,9 @@ class Game:
         self.pressed = {}
         self.last_spawn_time = time.time()
 
-        # Initialize dragon image and rect
         self.dragon_image = pygame.image.load('asset/dragon.png').convert_alpha()
-        self.dragon_rect = self.dragon_image.get_rect(topleft=(0, 550))  # Set initial position of the dragon
+        self.dragon_rect = self.dragon_image.get_rect(topleft=(-50, 550))  # Set initial position of the dragon
+        self.dragon_velocity = 1.5
 
     def start(self):
         self.is_playing = True
@@ -40,6 +40,7 @@ class Game:
         self.player.rect.y = 690
         self.score = 0
         self.last_spawn_time = time.time()
+        elf.dragon_rect.x = -50
 
     def game_over(self):
         self.sound_mana.stop('music')
@@ -72,12 +73,15 @@ class Game:
         self.all_enemy.draw(screen)
         self.all_healthpacks.draw(screen)
 
-        # Check for collisions with health packs
         healthpacks_collided = pygame.sprite.spritecollide(self.player, self.all_healthpacks, True, pygame.sprite.collide_mask)
         if healthpacks_collided:
             self.player.health = min(self.player.health + 20, self.player.max_health)
 
-        # Check for collision with dragon
+        if self.dragon_rect.x >=600:
+            self.dragon_velocity = -2
+        elif self.dragon_rect.x <= 15:
+            self.dragon_velocity = 1.5
+        self.dragon_rect.x += self.dragon_velocity
         if self.player.rect.colliderect(self.dragon_rect):
             self.player.health = 0
             self.game_over()

@@ -14,7 +14,7 @@ screen = pygame.display.set_mode((1200, 900))
 
 background = pygame.image.load('asset/sky.png').convert()
 mountain = pygame.image.load('asset/mountain.png').convert_alpha()
-sol = pygame.image.load('asset/sol.png').convert_alpha()  # Charger l'image du sol
+sol = pygame.image.load('asset/sol.png').convert_alpha()
 soleil = pygame.image.load('asset/soleil.png').convert_alpha()
 soleil = pygame.transform.scale(soleil, (300, 300))
 banner = pygame.image.load('asset/banner.png').convert_alpha()
@@ -67,7 +67,7 @@ while running:
 
     if game.is_playing:
         screen.blit(soleil, (920, 0))
-        screen.blit(game.dragon_image, game.dragon_rect.topleft)  # Draw the dragon at its rect position
+        screen.blit(game.dragon_image, game.dragon_rect.topleft)
         game.update(screen)
     else:
         screen.blit(banner, banner_rect)

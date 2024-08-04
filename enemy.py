@@ -19,11 +19,11 @@ class Enemy(pygame.sprite.Sprite):
         self.image = self.frames[self.current_frame]
         
         self.rect = self.image.get_rect()
-        self.rect.x = 1200 
+        self.rect.x = 1200
         self.rect.y =  715
         self.hit_time = None
         self.last_update_time = 0
-        self.frame_rate = 300  # Time between frames in milliseconds
+        self.frame_rate = 300
 
     def load_frames(self, sprite_sheet, num_frames, scale=None):
         frames = []
@@ -49,7 +49,7 @@ class Enemy(pygame.sprite.Sprite):
     def remove(self):
         self.game.score += 20
         self.rect.x = 1200
-        self.rect.y = 500 + random.randint(0, 200)
+        self.rect.y = 715
         self.velocity = random.randint(3, 5)
         self.hit_time = None
 
@@ -59,7 +59,7 @@ class Enemy(pygame.sprite.Sprite):
             self.remove()
         if not self.game.check_collision(self, self.game.all_player):
             self.rect.x -= self.velocity
-            self.update_animation()  # Update animation as it moves
+            self.update_animation()
         else:
             if self.hit_time is None:
                 self.hit_time = pygame.time.get_ticks()
